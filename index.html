@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+            /* 更改背景色 */
+            animation-iteration-count: infinite;
+        }
+
+        .marquee-box {
+            width: 200px;
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 10s linear infinite;
+        }
+
+        .donation-message {
+            padding: 5px;
+            border: 2px solid rgba(0, 0, 0, 100);
+            background-color: #98FB98;
+            /* 更改背景色 */
+            color: #FF9900;
+            display: flex;
+            /* 使用 Flexbox */
+            align-items: center;
+            /* 將內容垂直置中 */
+            justify-content: flex-start;
+            /* 將內容靠左對齊 */
+            border-radius: 10px;
+            position: relative;
+            /* 將 .donation-message 設定為相對位置，以讓 .donation-amount 和 img 定位於其中 */
+            height: 50px;
+            /* 更改高度值，這裡設定為 50px，你可以根據需求進一步調整 */
+        }
+
+        .donor-name {
+            font-weight: bold;
+        }
+
+        .donor-text {
+            font-size: 12;
+            font-weight: 0;
+        }
+
+        .donation-amount {
+            position: absolute;
+            top: 5px;
+            /* 調整位置，使金額字串在框框右上角 */
+            right: 5px;
+            /* 調整位置，使金額字串在框框右上角 */
+            padding: 2px 5px;
+            border-radius: 5px;
+            color: #000;
+            /* 可以自訂金額文字顏色 */
+            font-size: 20;
+        }
+
+        img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            /* 將圖片稍微往右偏移 2 像素 */
+            position: relative;
+            /* 將圖片設定為相對位置 */
+            left: 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <marquee class="marquee-container" id="marquee-container">
+    </marquee>
+
+    <script>
+        // 使用 Fetch API 從 donors.json 讀取捐贈者資訊
+        fetch('./donors.json')
+            .then(response => response.json())
+            .then(data => {
+                const marqueeContainer = document.getElementById('marquee-container');
+
+                // 將捐贈者資訊加入捐贈者跑馬燈中
+                data.forEach(donor => {
+                    const marqueeBox = document.createElement('div');
+                    marqueeBox.className = 'marquee-box';
+
+                    const donationMessage = document.createElement('div');
+                    donationMessage.className = 'donation-message';
+
+                    const img = document.createElement('img');
+                    img.src = 'https://i1.sndcdn.com/artworks-000142967722-vn15ci-t500x500.jpg';
+                    img.alt = 'Donor\'s Profile Picture';
+
+                    const donorName = document.createElement('span');
+                    donorName.className = 'donor-name';
+                    donorName.innerHTML = `${donor['donor-name']}<br><span class="donor-text">${donor['donor-text']}</span>`;
+
+                    const donationAmount = document.createElement('span');
+                    donationAmount.className = 'donation-amount';
+                    donationAmount.innerHTML = donor['donation-amount'];
+
+                    donationMessage.appendChild(img);
+                    donationMessage.appendChild(donorName);
+                    donationMessage.appendChild(donationAmount);
+
+                    marqueeBox.appendChild(donationMessage);
+                    marqueeContainer.appendChild(marqueeBox);
+                });
+            })
+            .catch(error => console.error('Error fetching donor information:', error));
+            const marqueeContainer = document.getElementById('marquee-container');
+            arqueeContainer.innerHTML += marqueeContainer.innerHTML;
+    </script>
+</body>
+
+</html>
